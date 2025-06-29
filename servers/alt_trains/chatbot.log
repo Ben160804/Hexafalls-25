@@ -1,0 +1,7 @@
+2025/06/29 04:50:20 [2025-06-29 04:50:20] Starting Gemini 2.0 API Chat Server
+2025/06/29 04:50:20 [2025-06-29 04:50:20] Server address: 0.0.0.0:8000
+2025/06/29 04:50:20 [2025-06-29 04:50:20] Base prompt loaded: 3516 characters
+2025/06/29 04:50:20 [2025-06-29 04:50:20] Session timeout: 1m0s
+2025/06/29 04:50:20 [2025-06-29 04:50:20] Model: gemini-2.0-flash-exp
+2025/06/29 04:50:20 [2025-06-29 04:50:20] Log file: chatbot.log
+2025/06/29 04:50:20 [2025-06-29 04:50:20] Press Ctrl+C to stop the server
