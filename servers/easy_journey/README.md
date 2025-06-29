@@ -2,6 +2,8 @@
 
 A robust, hackathon-ready API that generates comprehensive travel plans for Indian destinations with advanced validation and error handling.
 
+![Journey Planning Feature](../../images/journey_planning.png)
+
 ## 🚀 Features
 
 ### Core Functionality

@@ -4,6 +4,8 @@ This API provides train delay predictions for Indian Railways trains. It offers 
 1. Get all trains between two stations with predicted delays
 2. Get complete schedule with predicted delays for a specific train
 
+![Train Delay Prediction Feature](../../images/train_delay_prediction.png)
+
 ## API Endpoints
 
 ### 1. Get Trains Between Stations
