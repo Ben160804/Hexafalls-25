@@ -86,7 +86,7 @@ class _IntroBuddyScreenState extends State<IntroBuddyScreen> with SingleTickerPr
             SizedBox(width: padding / 2),
             Flexible(
               child: Text(
-                'Travel Buddy',
+                'Journease',
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.w700,
@@ -281,7 +281,7 @@ class _IntroBuddyScreenState extends State<IntroBuddyScreen> with SingleTickerPr
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildSectionCard(
-          'Welcome to Travel Buddy',
+          'Welcome to Journease',
           Icons.flight_takeoff,
           [
             _buildInfoItem(
@@ -310,17 +310,7 @@ class _IntroBuddyScreenState extends State<IntroBuddyScreen> with SingleTickerPr
           'What We Offer',
           Icons.star,
           [
-            _buildInfoItem(
-              'Train Booking',
-              'Find and book trains with real-time availability and smart recommendations.',
-              Icons.train,
-              const Color(0xFF2196F3),
-              fontScale: fontScale,
-              subtitleFontSize: subtitleFontSize,
-              iconSize: iconSize,
-              padding: screenWidth * 0.035,
-            ),
-            SizedBox(height: spacing / 2),
+
             _buildInfoItem(
               'Hotel Recommendations',
               'Get personalized accommodation suggestions based on your preferences and budget.',
