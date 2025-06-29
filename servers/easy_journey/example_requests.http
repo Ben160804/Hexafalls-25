@@ -1,0 +1,424 @@
+### Smart Indian Travel Planner API v2.0 - Example Requests
+
+# Health Check
+GET http://localhost:8000/health
+
+###
+
+# Valid Travel Request - Family Trip
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Delhi",
+  "start_date": "2024-12-25",
+  "duration": 5,
+  "adults": 2,
+  "children": 1,
+  "budget": 50000,
+  "trip_type": "family"
+}
+
+###
+
+# Valid Travel Request - Solo Adventure
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Bangalore",
+  "destination": "Goa",
+  "start_date": "2024-11-15",
+  "duration": 3,
+  "adults": 1,
+  "children": 0,
+  "budget": 15000,
+  "trip_type": "adventure"
+}
+
+###
+
+# Valid Travel Request - Cultural Trip
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Chennai",
+  "destination": "Varanasi",
+  "start_date": "2024-10-10",
+  "duration": 7,
+  "adults": 2,
+  "children": 0,
+  "budget": 30000,
+  "trip_type": "cultural"
+}
+
+###
+
+# Test Spelling Correction - Mumbay to Mumbai
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbay",
+  "destination": "Delhi",
+  "start_date": "2024-12-25",
+  "duration": 3,
+  "adults": 1,
+  "children": 0,
+  "budget": 10000,
+  "trip_type": "solo"
+}
+
+###
+
+# Test Spelling Correction - Dilli to Delhi
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Dilli",
+  "start_date": "2024-12-25",
+  "duration": 3,
+  "adults": 1,
+  "children": 0,
+  "budget": 10000,
+  "trip_type": "solo"
+}
+
+###
+
+# Test Invalid Location - Foreign City
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "New York",
+  "destination": "Delhi",
+  "start_date": "2024-12-25",
+  "duration": 3,
+  "adults": 1,
+  "children": 0,
+  "budget": 10000,
+  "trip_type": "solo"
+}
+
+###
+
+# Test Invalid Location - Gibberish
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "banana",
+  "destination": "Delhi",
+  "start_date": "2024-12-25",
+  "duration": 3,
+  "adults": 1,
+  "children": 0,
+  "budget": 10000,
+  "trip_type": "solo"
+}
+
+###
+
+# Test Invalid Location - Fictional Place
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "pluto",
+  "destination": "Delhi",
+  "start_date": "2024-12-25",
+  "duration": 3,
+  "adults": 1,
+  "children": 0,
+  "budget": 10000,
+  "trip_type": "solo"
+}
+
+###
+
+# Test Invalid Date - Past Date
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Delhi",
+  "start_date": "2023-01-01",
+  "duration": 3,
+  "adults": 1,
+  "children": 0,
+  "budget": 10000,
+  "trip_type": "solo"
+}
+
+###
+
+# Test Invalid Date - Wrong Format
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Delhi",
+  "start_date": "25-12-2024",
+  "duration": 3,
+  "adults": 1,
+  "children": 0,
+  "budget": 10000,
+  "trip_type": "solo"
+}
+
+###
+
+# Test Invalid Duration - Zero
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Delhi",
+  "start_date": "2024-12-25",
+  "duration": 0,
+  "adults": 1,
+  "children": 0,
+  "budget": 10000,
+  "trip_type": "solo"
+}
+
+###
+
+# Test Invalid Duration - Too Long
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Delhi",
+  "start_date": "2024-12-25",
+  "duration": 400,
+  "adults": 1,
+  "children": 0,
+  "budget": 10000,
+  "trip_type": "solo"
+}
+
+###
+
+# Test Invalid Travelers - No Travelers
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Delhi",
+  "start_date": "2024-12-25",
+  "duration": 3,
+  "adults": 0,
+  "children": 0,
+  "budget": 10000,
+  "trip_type": "solo"
+}
+
+###
+
+# Test Invalid Budget - Too Low
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Delhi",
+  "start_date": "2024-12-25",
+  "duration": 3,
+  "adults": 1,
+  "children": 0,
+  "budget": 50,
+  "trip_type": "solo"
+}
+
+###
+
+# Test Insufficient Budget - Very Low Budget
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Delhi",
+  "start_date": "2024-12-25",
+  "duration": 5,
+  "adults": 2,
+  "children": 1,
+  "budget": 1000,
+  "trip_type": "family"
+}
+
+###
+
+# Test Invalid Trip Type
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Delhi",
+  "start_date": "2024-12-25",
+  "duration": 3,
+  "adults": 1,
+  "children": 0,
+  "budget": 10000,
+  "trip_type": "invalid_type"
+}
+
+###
+
+# Test Edge Case - Same Source and Destination
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Mumbai",
+  "start_date": "2024-12-25",
+  "duration": 1,
+  "adults": 1,
+  "children": 0,
+  "budget": 5000,
+  "trip_type": "solo"
+}
+
+###
+
+# Test Edge Case - Large Group
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Goa",
+  "start_date": "2024-12-25",
+  "duration": 5,
+  "adults": 10,
+  "children": 5,
+  "budget": 200000,
+  "trip_type": "family"
+}
+
+###
+
+# Test Edge Case - Long Trip
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Delhi",
+  "start_date": "2024-12-25",
+  "duration": 30,
+  "adults": 1,
+  "children": 0,
+  "budget": 100000,
+  "trip_type": "solo"
+}
+
+###
+
+# Test Malformed Request - Missing Fields
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Delhi"
+}
+
+###
+
+# Test Malformed Request - Extra Fields
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Delhi",
+  "start_date": "2024-12-25",
+  "duration": 3,
+  "adults": 1,
+  "children": 0,
+  "budget": 10000,
+  "trip_type": "solo",
+  "extra_field": "should be ignored"
+}
+
+###
+
+# Test Different Trip Types
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Rishikesh",
+  "start_date": "2024-12-25",
+  "duration": 5,
+  "adults": 2,
+  "children": 0,
+  "budget": 30000,
+  "trip_type": "adventure"
+}
+
+###
+
+# Test Religious Trip
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Varanasi",
+  "start_date": "2024-12-25",
+  "duration": 7,
+  "adults": 2,
+  "children": 1,
+  "budget": 40000,
+  "trip_type": "religious"
+}
+
+###
+
+# Test Luxury Trip
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Udaipur",
+  "start_date": "2024-12-25",
+  "duration": 5,
+  "adults": 2,
+  "children": 0,
+  "budget": 100000,
+  "trip_type": "luxury"
+}
+
+###
+
+# Test Budget Trip
+POST http://localhost:8000/generate-plan
+Content-Type: application/json
+
+{
+  "source": "Mumbai",
+  "destination": "Pune",
+  "start_date": "2024-12-25",
+  "duration": 3,
+  "adults": 1,
+  "children": 0,
+  "budget": 5000,
+  "trip_type": "budget"
+} 
