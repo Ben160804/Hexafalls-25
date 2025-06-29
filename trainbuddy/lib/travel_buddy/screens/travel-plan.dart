@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:trainbuddy/travel_buddy/controllers/travel-plan-controller.dart';
 import 'package:trainbuddy/travel_buddy/components/train_miss_component.dart';
 import 'package:trainbuddy/travel_buddy/screens/travel-info.dart';
+import 'package:trainbuddy/travel_buddy/screens/particular_train.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:trainbuddy/travel_buddy/models/train_miss_model.dart';
 
@@ -1422,6 +1423,114 @@ class _TravelDetailsScreenState extends State<TravelDetailsScreen> with SingleTi
                     ],
                   ],
                 ),
+                // Add View Delay/Status button for train journeys
+                if (leg.mode.toLowerCase() == 'train') ...[
+                  const SizedBox(height: 16),
+                  GestureDetector(
+                    onTap: () {
+                      // Extract train name and number from leg details
+                      String trainName = 'Train';
+                      String trainNumber = 'Unknown';
+                      
+                      // Try to extract train info from details
+                      if (leg.details.isNotEmpty) {
+                        // Look for train number pattern (e.g., "12345" or "Train 12345" or "Rajdhani 12345")
+                        final trainNumberRegex = RegExp(r'(?:Train\s+)?(\d{4,5})');
+                        final match = trainNumberRegex.firstMatch(leg.details);
+                        if (match != null) {
+                          trainNumber = match.group(1)!;
+                        }
+                        
+                        // Try to extract train name - look for common train name patterns
+                        // Common train names: Rajdhani, Shatabdi, Duronto, Garib Rath, etc.
+                        final trainNamePatterns = [
+                          RegExp(r'(Rajdhani|Shatabdi|Duronto|Garib Rath|Jan Shatabdi|Sampark Kranti|Superfast|Express|Passenger|Local)', caseSensitive: false),
+                          RegExp(r'([A-Za-z\s]+)\s+\d{4,5}', caseSensitive: false),
+                        ];
+                        
+                        for (final pattern in trainNamePatterns) {
+                          final nameMatch = pattern.firstMatch(leg.details);
+                          if (nameMatch != null) {
+                            final extractedName = nameMatch.group(1)?.trim();
+                            if (extractedName != null && extractedName.isNotEmpty && extractedName.toLowerCase() != 'train') {
+                              trainName = extractedName;
+                              break;
+                            }
+                          }
+                        }
+                        
+                        // If we still have generic "Train", try to extract from the beginning of details
+                        if (trainName == 'Train') {
+                          final words = leg.details.split(' ');
+                          if (words.length > 1) {
+                            final firstWord = words[0].trim();
+                            if (firstWord.isNotEmpty && !RegExp(r'\d').hasMatch(firstWord)) {
+                              trainName = firstWord;
+                            }
+                          }
+                        }
+                        
+                        // Fallback: if we have a train number but no name, use "Train" + number
+                        if (trainName == 'Train' && trainNumber != 'Unknown') {
+                          trainName = 'Train $trainNumber';
+                        }
+                      }
+                      
+                      // Get the date from trip summary or use today's date
+                      String dateToUse = DateFormat('yyyy-MM-dd').format(DateTime.now());
+                      final tripSummary = _controller.travelDetails.value.tripSummary;
+                      if (tripSummary?.dates != null) {
+                        final dates = tripSummary!.dates!;
+                        if (dates.contains(' to ')) {
+                          dateToUse = dates.split(' to ')[0].trim();
+                          try {
+                            final parsedDate = DateFormat('dd/MM/yyyy').parse(dateToUse);
+                            dateToUse = DateFormat('yyyy-MM-dd').format(parsedDate);
+                          } catch (e) {
+                            // Keep original format if parsing fails
+                          }
+                        } else {
+                          dateToUse = dates.trim();
+                        }
+                      }
+                      
+                      debugPrint('🚂 Extracted train info - Name: $trainName, Number: $trainNumber, Date: $dateToUse');
+                      debugPrint('🚂 Details field: ${leg.details}');
+                      
+                      Get.to(() => ParticularTrainScreen(
+                        trainName: trainName,
+                        trainNumber: trainNumber,
+                        date: dateToUse,
+                      ));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF00E676), Color(0xFF00C853)],
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.schedule, color: Colors.white, size: 16),
+                          SizedBox(width: 8),
+                          Text(
+                            'View Delay/Status',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -1712,6 +1821,66 @@ class _TravelDetailsScreenState extends State<TravelDetailsScreen> with SingleTi
                         ),
                       ],
                     ],
+                  ),
+                  const SizedBox(height: 12),
+                  // View Delay/Status button
+                  GestureDetector(
+                    onTap: () {
+                      // Get the date from trip summary or use today's date
+                      String dateToUse = DateFormat('yyyy-MM-dd').format(DateTime.now());
+                      final tripSummary = _controller.travelDetails.value.tripSummary;
+                      if (tripSummary?.dates != null) {
+                        // Try to extract date from trip summary dates
+                        final dates = tripSummary!.dates!;
+                        if (dates.contains(' to ')) {
+                          // If it's a range, use the start date
+                          dateToUse = dates.split(' to ')[0].trim();
+                          // Convert to yyyy-MM-dd format if needed
+                          try {
+                            final parsedDate = DateFormat('dd/MM/yyyy').parse(dateToUse);
+                            dateToUse = DateFormat('yyyy-MM-dd').format(parsedDate);
+                          } catch (e) {
+                            // If parsing fails, keep the original format
+                          }
+                        } else {
+                          dateToUse = dates.trim();
+                        }
+                      }
+                      
+                      debugPrint('🚂 Train Journey Card - Name: ${train.name}, Number: ${train.number}, Date: $dateToUse');
+                      
+                      Get.to(() => ParticularTrainScreen(
+                        trainName: train.name ?? '',
+                        trainNumber: train.number ?? '',
+                        date: dateToUse,
+                      ));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF00E676), Color(0xFF00C853)],
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.schedule, color: Colors.white, size: 16),
+                          SizedBox(width: 8),
+                          Text(
+                            'View Delay/Status',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
